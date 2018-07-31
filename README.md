@@ -45,18 +45,19 @@ To keep this guide simple and easy to understand, we've used XAMPP to set up a s
 ### Initialisation and Installation
 Create an empty directory for your project, let’s name it “testApp”. Now, open up your command prompt and clone this repository into the directory created.
 
-### Adding in the public key
-Set an environmental variable called PUBLIC_CERT_PATH and assign your public key to it. The result should look like this:
-
-```plain
-  -----BEGIN PUBLIC KEY-----
-  MIIabcdNBgkqhkiG9w0BAQ4AAOCA338AMIIBCgKCAQEAwISbN8vv0HeUCPN9o29xCUzCsh0ZUM+wdc3Gi3+DfyO4rPec1f/uxFbw0Dscw1iEA1dUfQ5eKhhsOIPdjk//gOGQbBVmQ8DhDcGVGWrHrE/n/K/x0ZkIae4n4eNobK96Ic/C4YmXf5LBUmgkOwUM+5VDPxe3rMnm/3TQdJzAcBMIzqNixzseCh4ICYMSahKnkNY5bJGf+8WbT0i+3mHQwvLacAub+wFH6hyT4I7FXOcXmR+HIyD8xwwYLmB4Yy+cMmiDcc1J9KX34C5apXM2A3f2mOtgfM0WSH2NpXmZmpXmzbkbIxEw90N3zERrDb2myJAHAD0MKQ7abcdxPen96dIDAQAB
-  -----END PUBLIC KEY-----
-```
+### Verifying
+The method verifySignature in the SignService class will be used for verification. It takes in the following parameters:
+    * Request line: Http request line to calculate the signature
+    * Date: Date in http header to calculate the signature
+    * Message content: Message content to calculate the signature
+    * Digest type: Digest type to hash Request line + Date + Message content
+    * Cipher type: Cipher type to encrypt the hashed message
+    * Public key: Public key to decrypt the signature
+    * Signature: Signature sent by MessageMedia in http header X-MessageMedia-Signature
 
 ### Testing
-You are now ready to test the application. Run the C# application your computer.
-If all goes well, you should receive a `OK` response which indicates the verification was a success.
+You are now ready to test the application. Run the Java application your computer.
+If all goes well, you should receive a `true` response which indicates the verification was a success.
 
 ## :closed_book: API Reference Documentation
 Check out the [full API documentation](https://developers.messagemedia.com/code/secure-webhooks-api-documentation/) for more detailed information.
@@ -66,21 +67,3 @@ Please contact developer support at developers@messagemedia.com or check out the
 
 ## :page_with_curl: License
 Apache License. See the [LICENSE](LICENSE) file.
-
-
-
-
-Public SDK for secure callbacks
-
-- Method to verify signature: SignService#verifySignature
-- Input: SignatureInfo with 7 properties:
-    * Request line: Http request line to calculate the signature
-    * Date: Date in http header to calculate the signature
-    * Message content: Message content to calculate the signature
-    * Digest type: Digest type to hash Request line + Date + Message content
-    * Cipher type: Cipher type to encrypt the hashed message
-    * Public key: Public key to decrypt the signature
-    * Signature: Signature sent by MessageMedia in http header X-MessageMedia-Signature
-- Output:
-    * true: signature is matched
-    * false: signature is not matched
